@@ -9,3 +9,16 @@ server:
 spring:
   application:
     name: api-parking-lot
+  h2:
+    console:
+      enabled: true
+      path: /h2-ui
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: sa
