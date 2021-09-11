@@ -1,0 +1,11 @@
+logging:
+  level:
+    root: INFO
+    com.fs.api.parking.lot: DEBUG
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-parking-lot
