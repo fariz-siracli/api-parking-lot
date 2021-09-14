@@ -46,7 +46,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ParkingEventDto vehicleEntranceService(VehicleDto vehicleDto, GateDto gateDto) {
+    public ParkingEntryEventDto vehicleEntranceService(VehicleDto vehicleDto, GateDto gateDto) {
         logger.info("LogEvent.vehicleEntranceService.start : entry from gate {}", gateDto.getId());
         var entryGateEntity = gateService.findGateEntity(gateDto);
         var vehicle = vehicleService.saveVehicle(vehicleDto);
@@ -63,9 +63,10 @@ public class EventServiceImpl implements EventService {
 
     }
 
-    private ParkingEventDto saveEventAndReturnDto(GateEntity entryGateEntity,
-                                                  VehicleEntity vehicle,
-                                                  SlotEntity assignedSlot) {
+    private ParkingEntryEventDto saveEventAndReturnDto(GateEntity entryGateEntity,
+                                                       VehicleEntity vehicle,
+                                                       SlotEntity assignedSlot,
+                                                       TariffEntity tariffEntity) {
         logger.debug("LogEvent.saveEventAndReturnDto.start : vehicle {}", vehicle.getId());
 
         var date = new Date();
@@ -78,6 +79,7 @@ public class EventServiceImpl implements EventService {
                 .slotEntity(assignedSlot)
                 .vehicleEntity(vehicle)
                 .ticketNumber(ticket)
+                .tariffEntity(tariffEntity)
                 .build();
         parkingEventRepository.save(event);
 

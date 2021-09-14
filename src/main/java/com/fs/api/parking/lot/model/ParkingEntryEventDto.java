@@ -1,6 +1,5 @@
 package com.fs.api.parking.lot.model;
 
-import com.fs.api.parking.lot.dao.model.VehicleEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +13,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("DTO class to response Parking Event")
-public class ParkingEventDto {
+public class ParkingEntryEventDto {
 
     private String ticketNumber;
 
-    private LocalDateTime entryTime;
+    private String entryTime;
 
-    private String exitTime;
+    private VehicleDto vehicleDto;
 
-    private VehicleEntity vehicleEntity;
+    private String pricePerMinute;
+
+    private SlotInfoDto slotInfoDto;
 }
