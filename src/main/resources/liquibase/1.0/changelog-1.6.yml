@@ -40,7 +40,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: ticket_number
-                  type: varchar(16)
+                  type: varchar(32)
                   constraints:
                     nullable: false
               - column:
