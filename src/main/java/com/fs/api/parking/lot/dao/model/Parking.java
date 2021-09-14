@@ -1,29 +1,32 @@
 package com.fs.api.parking.lot.dao.model;
 
-import com.fs.api.parking.lot.model.enums.TariffStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "tariff", schema = "public")
+@Table(name = "parking", schema = "public")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TariffEntity {
+public class Parking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,13 +35,18 @@ public class TariffEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @Column(name = "capacity")
+    private Integer capacity;
 
-    @Column(name = "status")
-    @Enumerated(value = EnumType.STRING)
-    private TariffStatus paymentStatus;
+    @Column(name = "floor_count")
+    private Integer floorCount;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "relatedParking", fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private Set<Floor> floorSet = new HashSet<>();
 }

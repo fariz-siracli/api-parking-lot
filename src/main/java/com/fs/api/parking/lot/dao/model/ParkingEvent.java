@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingEventEntity {
+public class ParkingEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -39,23 +39,23 @@ public class ParkingEventEntity {
 
     @OneToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
-    private VehicleEntity vehicleEntity;
+    private Vehicle vehicle;
 
     @OneToOne
     @JoinColumn(name = "slot_id", referencedColumnName = "id")
-    private SlotEntity slotEntity;
+    private Slot slot;
 
     @OneToOne
     @JoinColumn(name = "entry_gate_id", referencedColumnName = "id")
-    private GateEntity entryGateEntity;
+    private Gate entryGate;
 
     @OneToOne
     @JoinColumn(name = "exit_gate_id", referencedColumnName = "id")
-    private GateEntity exitGateEntity;
+    private Gate exitGate;
 
     @OneToOne
     @JoinColumn(name = "tariff_id", referencedColumnName = "id")
-    private TariffEntity tariffEntity;
+    private Tariff tariff;
 
     @PrePersist
     protected void onCreate() {

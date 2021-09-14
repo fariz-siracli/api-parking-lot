@@ -1,11 +1,11 @@
 package com.fs.api.parking.lot.service.impl;
 
-import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.dao.SlotRepository;
-import com.fs.api.parking.lot.dao.model.FloorEntity;
-import com.fs.api.parking.lot.dao.model.GateEntity;
-import com.fs.api.parking.lot.dao.model.SlotEntity;
-import com.fs.api.parking.lot.dao.model.VehicleEntity;
+import com.fs.api.parking.lot.dao.model.Floor;
+import com.fs.api.parking.lot.dao.model.Gate;
+import com.fs.api.parking.lot.dao.model.Slot;
+import com.fs.api.parking.lot.dao.model.Vehicle;
+import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.service.FloorService;
 import com.fs.api.parking.lot.service.SlotSearchService;
 import com.fs.api.parking.lot.service.SlotService;
@@ -37,36 +37,40 @@ public class SlotServiceImpl implements SlotService {
     }
 
     @Override
-    public SlotEntity slotAssignService(VehicleEntity vehicleEntity, GateEntity gateEntity) {
-        logger.info("LogEvent.slotAssignService.start : vehicle {}", vehicleEntity.getId());
+    public Slot findSlotForVehicle(Vehicle vehicle, Gate gate) {
+        logger.info("LogEvent.slotAssignService.start : vehicle {}", vehicle.getId());
 
-        List<FloorEntity> availableByHeightFloors = floorService
-                .findAvailableByHeightAndWeightFloors(vehicleEntity.getHeight(), vehicleEntity.getHeight(),
-                        gateEntity.getRelatedFloorEntity());
-        SlotEntity freeSlot = slotSearchService.findFirstFreeSlot(availableByHeightFloors, vehicleEntity);
+        List<Floor> availableByHeightFloors = floorService
+                .findAvailableByHeightAndWeightFloors(vehicle.getHeight(), vehicle.getHeight(),
+                        gate.getRelatedFloor());
+        Slot freeSlot = slotSearchService.findFirstFreeSlot(availableByHeightFloors, vehicle);
 
-        freeSlot = updateSlotEntity(vehicleEntity, freeSlot);
+        freeSlot = updateSlot(vehicle, freeSlot);
 
-        logger.info("LogEvent.slotAssignService.end : vehicle {}", vehicleEntity.getId());
+        logger.info("LogEvent.slotAssignService.end : vehicle {}", vehicle.getId());
         return freeSlot;
     }
 
     @Override
-    public void slotFreeService(SlotEntity occupiedSlot) {
+    public void freeSlot(Slot occupiedSlot) {
+        logger.info("LogEvent.slotFreeService.start : slot {}", occupiedSlot.getId());
+
         occupiedSlot.setState(FREE);
-        occupiedSlot.setCurrentVehicleEntity(null);
+        occupiedSlot.setCurrentVehicle(null);
         if (occupiedSlot.getRelatedFloor().getState() == FULL) {
             occupiedSlot.getRelatedFloor().setState(AVAILABLE);
         }
         slotRepository.save(occupiedSlot);
+
+        logger.info("LogEvent.slotFreeService.end : slot {}", occupiedSlot.getId());
     }
 
     @Async
-    SlotEntity updateSlotEntity(VehicleEntity vehicleEntity, SlotEntity freeSlot) {
-        logger.info("LogEvent.updateSlotEntity.start : slot {}", freeSlot.getId());
+    Slot updateSlot(Vehicle vehicle, Slot freeSlot) {
+        logger.info("LogEvent.updateSlot.start : slot {}", freeSlot.getId());
         freeSlot.setState(IN_USE);
-        freeSlot.setCurrentVehicleEntity(vehicleEntity);
-        SlotEntity finalFreeSlot = freeSlot;
+        freeSlot.setCurrentVehicle(vehicle);
+        Slot finalFreeSlot = freeSlot;
         freeSlot.getRelatedFloor()
                 .getSlotSet()
                 .stream()
@@ -76,7 +80,7 @@ public class SlotServiceImpl implements SlotService {
                         v -> logger.warn("LogEvent.updateSlotEntity.warn : there free on floor {}", v.getId()),
                         () -> finalFreeSlot.getRelatedFloor().setState(FULL));
 
-        logger.info("LogEvent.updateSlotEntity.end : slot {}", freeSlot.getId());
+        logger.info("LogEvent.updateSlot.end : slot {}", freeSlot.getId());
         freeSlot = slotRepository.save(freeSlot);
         return freeSlot;
     }

@@ -1,8 +1,8 @@
 package com.fs.api.parking.lot.service.impl;
 
+import com.fs.api.parking.lot.dao.model.Floor;
 import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.dao.FloorRepository;
-import com.fs.api.parking.lot.dao.model.FloorEntity;
 import com.fs.api.parking.lot.exception.DPException;
 import com.fs.api.parking.lot.service.FloorService;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,11 @@ public class FloorServiceImpl implements FloorService {
     }
 
     @Override
-    public List<FloorEntity> findAvailableByHeightAndWeightFloors(int height, int weight, FloorEntity floorEntity) {
-        logger.info("LogEvent.findAvailableByHeightAndWeightFloors.start : floor {}", floorEntity.getId());
+    public List<Floor> findAvailableByHeightAndWeightFloors(int height, int weight, Floor floor) {
+        logger.info("LogEvent.findAvailableByHeightAndWeightFloors.start : floor {}", floor.getId());
 
-        List<FloorEntity> floorList = floorRepository
-                .findByStateAndHeightLessThan(AVAILABLE.name(), height, floorEntity.getId());
+        List<Floor> floorList = floorRepository
+                .findByStateAndHeightLessThan(AVAILABLE.name(), height, floor.getId());
         if (floorList.size() == 0) {
             throw new DPException("exception.parking-lot.no-floor-available", "There is no floor for requested params");
         }
@@ -38,13 +38,13 @@ public class FloorServiceImpl implements FloorService {
                 .filter(f -> {
                     int floorCurrentWeight = f.getSlotSet()
                             .stream()
-                            .filter(s -> Objects.nonNull(s.getCurrentVehicleEntity()))
-                            .mapToInt(s -> s.getCurrentVehicleEntity().getWeight())
+                            .filter(s -> Objects.nonNull(s.getCurrentVehicle()))
+                            .mapToInt(s -> s.getCurrentVehicle().getWeight())
                             .sum();
                     return (floorCurrentWeight + weight) < f.getWeight();
                 }).collect(Collectors.toList());
         logger.info("LogEvent.findAvailableByHeightAndWeightFloors.start : floor {}, count is {}",
-                floorEntity.getId(), available.size());
+                floor.getId(), available.size());
         return available;
     }
 }

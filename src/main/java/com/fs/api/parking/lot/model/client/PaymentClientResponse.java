@@ -1,4 +1,4 @@
-package com.fs.api.parking.lot.model;
+package com.fs.api.parking.lot.model.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

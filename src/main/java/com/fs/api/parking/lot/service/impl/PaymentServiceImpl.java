@@ -1,8 +1,8 @@
 package com.fs.api.parking.lot.service.impl;
 
 import com.fs.api.parking.lot.dao.PaymentRepository;
-import com.fs.api.parking.lot.dao.model.ParkingEventEntity;
-import com.fs.api.parking.lot.dao.model.PaymentEntity;
+import com.fs.api.parking.lot.dao.model.ParkingEvent;
+import com.fs.api.parking.lot.dao.model.Payment;
 import com.fs.api.parking.lot.exception.DPException;
 import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.mapper.PaymentMapper;
@@ -34,15 +34,15 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentEntity findPaymentByEvent(ParkingEventEntity parkingEventEntity) {
-        logger.info("LogEvent.findPaymentByEvent.start : gate {}", parkingEventEntity.getId());
+    public Payment findPaymentByEvent(ParkingEvent parkingEvent) {
+        logger.info("LogEvent.findPaymentByEvent.start : gate {}", parkingEvent.getId());
 
-        var paymentOpt = paymentRepository.findByParkingEventEntity(parkingEventEntity);
+        var paymentOpt = paymentRepository.findByParkingEvent(parkingEvent);
         if (paymentOpt.isEmpty()) {
             throw new DPException("exception.parking-lot.payment-not-found", "Requested Payment not found");
         }
 
-        logger.info("LogEvent.findPaymentByEvent.end : gate {}", parkingEventEntity.getId());
+        logger.info("LogEvent.findPaymentByEvent.end : gate {}", parkingEvent.getId());
         return paymentOpt.get();
     }
 
@@ -57,8 +57,8 @@ public class PaymentServiceImpl implements PaymentService {
         if (!paymentResponse.getSuccess()) {
             throw new DPException("exception.parking-lot.payment-not-passed", "Requested Payment not passed");
         }
-        var payment = PaymentEntity.builder()
-                .parkingEventEntity(event)
+        var payment = Payment.builder()
+                .parkingEvent(event)
                 .amount(mockAmount)
                 .paymentStatus(SUCCESS)
                 .build();

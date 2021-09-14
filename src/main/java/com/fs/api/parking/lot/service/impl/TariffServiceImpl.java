@@ -1,7 +1,7 @@
 package com.fs.api.parking.lot.service.impl;
 
 import com.fs.api.parking.lot.dao.TariffRepository;
-import com.fs.api.parking.lot.dao.model.TariffEntity;
+import com.fs.api.parking.lot.dao.model.Tariff;
 import com.fs.api.parking.lot.exception.DPException;
 import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.model.VehicleDto;
@@ -20,7 +20,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public TariffEntity findTariffByVehicle(VehicleDto vehicleDto) {
+    public Tariff findTariffByVehicle(VehicleDto vehicleDto) {
         //return Mock Tariff according to vehicle params
         var opt = tariffRepository.findById(1L);
         if (opt.isEmpty()) {

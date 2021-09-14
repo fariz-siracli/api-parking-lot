@@ -1,10 +1,10 @@
 package com.fs.api.parking.lot.dao;
 
-import com.fs.api.parking.lot.dao.model.GateEntity;
+import com.fs.api.parking.lot.dao.model.Gate;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GateRepository extends CrudRepository<GateEntity, Long> {
+public interface GateRepository extends CrudRepository<Gate, Long> {
 
 }
