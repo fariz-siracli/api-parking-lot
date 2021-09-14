@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -51,4 +52,13 @@ public class ParkingEventEntity {
     @OneToOne
     @JoinColumn(name = "exit_gate_id", referencedColumnName = "id")
     private GateEntity exitGateEntity;
+
+    @OneToOne
+    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
+    private TariffEntity tariffEntity;
+
+    @PrePersist
+    protected void onCreate() {
+        entryTime = LocalDateTime.now();
+    }
 }
