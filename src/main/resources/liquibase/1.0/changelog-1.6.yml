@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-parking-event-table
+      author: Fariz Sirajli
+      changes:
+        - createTable:
+            tableName: parking_event
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: vehicle_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: slot_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entry_gate_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: exit_gate_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: tariff_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: ticket_number
+                  type: varchar(16)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entry_time
+                  type: TIMESTAMP
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: exit_time
+                  type: TIMESTAMP
+                  defaultValue: now()
+                  constraints:
+                    nullable: true
+            remarks: Table to store information about parking events
