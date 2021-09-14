@@ -1,6 +1,6 @@
 package com.fs.api.parking.lot.service.impl;
 
-import com.fs.api.parking.lot.DPLogger;
+import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.dao.FloorRepository;
 import com.fs.api.parking.lot.dao.model.FloorEntity;
 import com.fs.api.parking.lot.exception.DPException;

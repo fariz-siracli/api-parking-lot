@@ -1,4 +1,4 @@
-package com.fs.api.parking.lot;
+package com.fs.api.parking.lot.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

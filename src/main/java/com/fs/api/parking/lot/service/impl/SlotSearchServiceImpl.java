@@ -1,9 +1,9 @@
 package com.fs.api.parking.lot.service.impl;
 
-import com.fs.api.parking.lot.DPLogger;
 import com.fs.api.parking.lot.dao.model.FloorEntity;
 import com.fs.api.parking.lot.dao.model.SlotEntity;
 import com.fs.api.parking.lot.dao.model.VehicleEntity;
+import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.model.enums.SlotType;
 import com.fs.api.parking.lot.service.SlotSearchService;
 import com.fs.api.parking.lot.util.SlotSizeHelper;
@@ -23,6 +23,8 @@ public class SlotSearchServiceImpl implements SlotSearchService {
     public SlotSearchServiceImpl(SlotSizeHelper slotSizeHelper) {
         this.slotSizeHelper = slotSizeHelper;
     }
+
+    // If Gate count is more than 2 then concurrency must be implemented
 
     @Override
     public SlotEntity findFirstFreeSlot(List<FloorEntity> floorList, VehicleEntity vehicle) {
