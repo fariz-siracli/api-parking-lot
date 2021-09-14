@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel("DTO class to request Parking fee payment")
 public class PaymentRequestDto {
 
-   @NotNull
-   private String ticketNumber;
-
+    @NotNull
+    private String ticketNumber;
 }

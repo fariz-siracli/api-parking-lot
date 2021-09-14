@@ -13,7 +13,7 @@ public abstract class EventMapper {
     public static final EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
 
     @Mappings({
-            @Mapping(target = "pricePerMinute", source = "event.getTariff.price"),
+            @Mapping(target = "pricePerMinute", source = "event.tariff.price"),
             @Mapping(target = "vehicleDto.height", source = "event.vehicle.height"),
             @Mapping(target = "vehicleDto.weight", source = "event.vehicle.weight"),
             @Mapping(target = "slotInfoDto.floorNumber", source = "event.slot.relatedFloor.name"),

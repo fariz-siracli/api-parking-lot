@@ -80,7 +80,7 @@ public class EventServiceImpl implements EventService {
         var parkingEvent = eventHelper.findEventByTicket(request.getTicket());
         var payment = paymentService.findPaymentByEvent(parkingEvent);
 
-        if (payment.getPaymentStatus() != SUCCESS) {
+        if (payment.getStatus() != SUCCESS) {
             throw new DPException("exception.parking-lot.success-payment-not-found", "Success payment not found");
         }
 

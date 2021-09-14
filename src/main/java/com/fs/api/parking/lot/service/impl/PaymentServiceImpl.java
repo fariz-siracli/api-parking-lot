@@ -60,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
         var payment = Payment.builder()
                 .parkingEvent(event)
                 .amount(mockAmount)
-                .paymentStatus(SUCCESS)
+                .status(SUCCESS)
                 .build();
 
         paymentRepository.save(payment);

@@ -41,7 +41,7 @@ public class Payment {
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -21,7 +21,8 @@ public abstract class PaymentMapper {
     @Mappings({
             @Mapping(target = "amount", source = "amount"),
             @Mapping(target = "paymentTime", source = "entity.createdAt", qualifiedByName = "convertTime"),
-            @Mapping(target = "durationInMinutes", source = "entity.parkingEvent", qualifiedByName = "calculateDuration")
+            @Mapping(target = "durationInMinutes", source = "entity.parkingEvent",
+                    qualifiedByName = "calculateDuration")
     })
     public abstract PaymentResponseDto entityToDto(Payment entity);
 
