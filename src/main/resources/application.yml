@@ -26,3 +26,7 @@ server:
 logging:
   level:
     root: INFO
+
+api:
+  root:
+    url: /v1/parking-lot
