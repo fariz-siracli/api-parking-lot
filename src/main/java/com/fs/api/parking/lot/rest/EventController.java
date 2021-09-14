@@ -29,4 +29,10 @@ public class EventController {
 
         return eventService.vehicleEntranceService(request.getVehicleDto(), request.getEntryGateDto());
     }
+
+    @PostMapping("/vehicle-exit")
+    public ParkingExitEventDto vehicleExitEvent(@RequestBody @NotNull ExitRequest request) {
+
+        return eventService.vehicleExitService(request);
+    }
 }

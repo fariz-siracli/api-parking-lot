@@ -1,6 +1,6 @@
 package com.fs.api.parking.lot.service.impl;
 
-import com.fs.api.parking.lot.DPLogger;
+import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.dao.SlotRepository;
 import com.fs.api.parking.lot.dao.model.FloorEntity;
 import com.fs.api.parking.lot.dao.model.GateEntity;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.fs.api.parking.lot.model.enums.FloorState.AVAILABLE;
 import static com.fs.api.parking.lot.model.enums.FloorState.FULL;
 import static com.fs.api.parking.lot.model.enums.SlotState.FREE;
 import static com.fs.api.parking.lot.model.enums.SlotState.IN_USE;
@@ -51,8 +52,13 @@ public class SlotServiceImpl implements SlotService {
     }
 
     @Override
-    public void slotFreeService(SlotEntity slotEntity) {
-
+    public void slotFreeService(SlotEntity occupiedSlot) {
+        occupiedSlot.setState(FREE);
+        occupiedSlot.setCurrentVehicleEntity(null);
+        if (occupiedSlot.getRelatedFloor().getState() == FULL) {
+            occupiedSlot.getRelatedFloor().setState(AVAILABLE);
+        }
+        slotRepository.save(occupiedSlot);
     }
 
     @Async
