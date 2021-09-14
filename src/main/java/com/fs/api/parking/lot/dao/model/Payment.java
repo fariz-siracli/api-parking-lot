@@ -1,7 +1,6 @@
 package com.fs.api.parking.lot.dao.model;
 
-import com.fs.api.parking.lot.model.enums.SlotState;
-import com.fs.api.parking.lot.model.enums.SlotType;
+import com.fs.api.parking.lot.model.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,43 +10,44 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "slot", schema = "public")
+@Table(name = "payment", schema = "public")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SlotEntity {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "number")
-    private Integer number;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "floor_id")
-    private FloorEntity relatedFloor;
-
-    @Column(name = "type")
-    @Enumerated(value = EnumType.STRING)
-    private SlotType type;
-
-    @Column(name = "state")
-    @Enumerated(value = EnumType.STRING)
-    private SlotState state;
-
     @OneToOne
-    @JoinColumn(name = "current_vehicle_id", referencedColumnName = "id")
-    private VehicleEntity currentVehicleEntity;
+    @JoinColumn(name = "parking_event_id", referencedColumnName = "id")
+    private ParkingEvent parkingEvent;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
+
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }

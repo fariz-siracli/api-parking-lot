@@ -2,7 +2,7 @@ package com.fs.api.parking.lot.service.impl;
 
 import com.fs.api.parking.lot.logger.DPLogger;
 import com.fs.api.parking.lot.dao.VehicleRepository;
-import com.fs.api.parking.lot.dao.model.VehicleEntity;
+import com.fs.api.parking.lot.dao.model.Vehicle;
 import com.fs.api.parking.lot.model.VehicleDto;
 import com.fs.api.parking.lot.service.VehicleService;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,9 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleEntity saveVehicle(VehicleDto vehicle) {
+    public Vehicle save(VehicleDto vehicle) {
         logger.info("LogEvent.slotAssignService.start");
-        VehicleEntity entity = VehicleEntity.builder()
+        Vehicle entity = Vehicle.builder()
                 .height(vehicle.getHeight())
                 .weight(vehicle.getWeight())
                 .plateNumber(vehicle.getPlateNumber())

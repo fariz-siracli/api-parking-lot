@@ -1,6 +1,6 @@
 package com.fs.api.parking.lot.mapper;
 
-import com.fs.api.parking.lot.dao.model.ParkingEventEntity;
+import com.fs.api.parking.lot.dao.model.ParkingEvent;
 import com.fs.api.parking.lot.model.ParkingEntryEventDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,12 +13,12 @@ public abstract class EventMapper {
     public static final EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
 
     @Mappings({
-            @Mapping(target = "pricePerMinute", source = "eventEntity.tariffEntity.price"),
-            @Mapping(target = "vehicleDto.height", source = "eventEntity.vehicleEntity.height"),
-            @Mapping(target = "vehicleDto.weight", source = "eventEntity.vehicleEntity.weight"),
-            @Mapping(target = "slotInfoDto.floorNumber", source = "eventEntity.slotEntity.relatedFloor.name"),
-            @Mapping(target = "slotInfoDto.slotNumber", source = "eventEntity.slotEntity.number"),
-            @Mapping(target = "entryTime", source = "eventEntity.entryTime", qualifiedByName = "convertTime"),
+            @Mapping(target = "pricePerMinute", source = "event.getTariff.price"),
+            @Mapping(target = "vehicleDto.height", source = "event.vehicle.height"),
+            @Mapping(target = "vehicleDto.weight", source = "event.vehicle.weight"),
+            @Mapping(target = "slotInfoDto.floorNumber", source = "event.slot.relatedFloor.name"),
+            @Mapping(target = "slotInfoDto.slotNumber", source = "event.slot.number"),
+            @Mapping(target = "entryTime", source = "event.entryTime", qualifiedByName = "convertTime"),
     })
-    public abstract ParkingEntryEventDto entityToDto(ParkingEventEntity eventEntity);
+    public abstract ParkingEntryEventDto entityToDto(ParkingEvent event);
 }

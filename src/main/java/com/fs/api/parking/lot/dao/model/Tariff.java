@@ -1,6 +1,6 @@
 package com.fs.api.parking.lot.dao.model;
 
-import com.fs.api.parking.lot.model.enums.PaymentStatus;
+import com.fs.api.parking.lot.model.enums.TariffStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,41 +13,32 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "payment", schema = "public")
+@Table(name = "tariff", schema = "public")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentEntity {
+public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "parking_event_id", referencedColumnName = "id")
-    private ParkingEventEntity parkingEventEntity;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "amount")
-    private BigDecimal amount;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private TariffStatus paymentStatus;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 }

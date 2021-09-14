@@ -31,7 +31,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FloorEntity {
+public class Floor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -64,17 +64,17 @@ public class FloorEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parking_id")
-    private ParkingEntity relatedParkingEntity;
+    private Parking relatedParking;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "relatedFloorEntity", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "relatedFloor", fetch = FetchType.LAZY,
             cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private Set<GateEntity> gateEntities = new HashSet<>();
+    private Set<Gate> gateEntities = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "relatedFloor", fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private Set<SlotEntity> slotSet = new HashSet<>();
+    private Set<Slot> slotSet = new HashSet<>();
 }

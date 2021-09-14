@@ -1,7 +1,7 @@
 package com.fs.api.parking.lot.mapper;
 
-import com.fs.api.parking.lot.dao.model.ParkingEventEntity;
-import com.fs.api.parking.lot.dao.model.PaymentEntity;
+import com.fs.api.parking.lot.dao.model.ParkingEvent;
+import com.fs.api.parking.lot.dao.model.Payment;
 import com.fs.api.parking.lot.model.PaymentResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,7 +9,6 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +21,9 @@ public abstract class PaymentMapper {
     @Mappings({
             @Mapping(target = "amount", source = "amount"),
             @Mapping(target = "paymentTime", source = "entity.createdAt", qualifiedByName = "convertTime"),
-            @Mapping(target = "durationInMinutes", source = "entity.parkingEventEntity", qualifiedByName = "calculateDuration")
+            @Mapping(target = "durationInMinutes", source = "entity.parkingEvent", qualifiedByName = "calculateDuration")
     })
-    public abstract PaymentResponseDto entityToDto(PaymentEntity entity);
+    public abstract PaymentResponseDto entityToDto(Payment entity);
 
     @Named("convertTime")
     protected String convertTime(LocalDateTime dateTime) {
@@ -33,7 +32,7 @@ public abstract class PaymentMapper {
     }
 
     @Named("calculateDuration")
-    protected String calculateDuration(ParkingEventEntity eventEntity) {
+    protected String calculateDuration(ParkingEvent eventEntity) {
         var minutes = Duration.between(LocalDateTime.now(), eventEntity.getEntryTime()).toMinutes();
 
         return String.format("%d minutes", minutes);

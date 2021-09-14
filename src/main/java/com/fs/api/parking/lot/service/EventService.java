@@ -7,7 +7,7 @@ import com.fs.api.parking.lot.model.ParkingExitEventDto;
 import com.fs.api.parking.lot.model.VehicleDto;
 
 public interface EventService {
-    ParkingEntryEventDto vehicleEntranceService(VehicleDto vehicle, GateDto gateEntity);
+    ParkingEntryEventDto vehicleEntrance(VehicleDto vehicle, GateDto gateEntity);
 
-    ParkingExitEventDto vehicleExitService(ExitRequest request);
+    ParkingExitEventDto vehicleExit(ExitRequest request);
 }
