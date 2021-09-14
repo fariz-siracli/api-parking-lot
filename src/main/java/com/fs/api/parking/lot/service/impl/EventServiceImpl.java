@@ -5,6 +5,7 @@ import com.fs.api.parking.lot.dao.ParkingEventRepository;
 import com.fs.api.parking.lot.dao.model.GateEntity;
 import com.fs.api.parking.lot.dao.model.ParkingEventEntity;
 import com.fs.api.parking.lot.dao.model.SlotEntity;
+import com.fs.api.parking.lot.dao.model.TariffEntity;
 import com.fs.api.parking.lot.dao.model.VehicleEntity;
 import com.fs.api.parking.lot.mapper.EventMapper;
 import com.fs.api.parking.lot.model.GateDto;
@@ -14,6 +15,7 @@ import com.fs.api.parking.lot.service.EventService;
 import com.fs.api.parking.lot.service.GateService;
 import com.fs.api.parking.lot.service.SlotService;
 import com.fs.api.parking.lot.service.VehicleService;
+import com.fs.api.parking.lot.util.EventHelper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,8 +29,12 @@ public class EventServiceImpl implements EventService {
     private final GateService gateService;
     private final VehicleService vehicleService;
     private final SlotService slotService;
+    private final PaymentService paymentService;
+    private final TariffService tariffService;
 
     private final ParkingEventRepository parkingEventRepository;
+
+    private final EventHelper eventHelper;
 
     public EventServiceImpl(GateService gateService, VehicleService vehicleService,
                             SlotService slotService,
@@ -45,8 +51,9 @@ public class EventServiceImpl implements EventService {
         var entryGateEntity = gateService.findGateEntity(gateDto);
         var vehicle = vehicleService.saveVehicle(vehicleDto);
         var assignedSlot = slotService.slotAssignService(vehicle, entryGateEntity);
+        var assignTariff = tariffService.findTariffByVehicle(vehicleDto);
 
-        var eventDto = saveEventAndReturnDto(entryGateEntity, vehicle, assignedSlot);
+        var eventDto = saveEventAndReturnDto(entryGateEntity, vehicle, assignedSlot, assignTariff);
         logger.info("LogEvent.vehicleEntranceService.end : entry from gate {}", gateDto.getId());
         return eventDto;
     }
