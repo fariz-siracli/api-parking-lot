@@ -23,9 +23,10 @@ public class TariffServiceImpl implements TariffService {
     public Tariff findTariffByVehicle(VehicleDto vehicleDto) {
         //return Mock Tariff according to vehicle params
         var opt = tariffRepository.findById(1L);
-        if (opt.isEmpty()) {
+
+        return opt.orElseThrow(() -> {
+            logger.error("LogEvent.findTariffByVehicle.error");
             throw new DPException("exception.parking-lot.tariff-not-found", "Tariff not found");
-        }
-        return opt.get();
+        });
     }
 }

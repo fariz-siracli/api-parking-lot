@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,8 +15,10 @@ public class VehicleDto {
 
     private String plateNumber;
 
+    @NotNull
     private Integer weight;
 
+    @NotNull
     private Integer height;
 
 }

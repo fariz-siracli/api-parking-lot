@@ -2,6 +2,7 @@ package com.fs.api.parking.lot.mapper;
 
 import com.fs.api.parking.lot.dao.model.ParkingEvent;
 import com.fs.api.parking.lot.model.ParkingEntryEventDto;
+import com.fs.api.parking.lot.model.ParkingExitEventDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -21,4 +22,10 @@ public abstract class EventMapper {
             @Mapping(target = "entryTime", source = "event.entryTime", qualifiedByName = "convertTime"),
     })
     public abstract ParkingEntryEventDto entityToDto(ParkingEvent event);
+
+    @Mappings({
+            @Mapping(target = "ticketNumber", source = "ticketNumber"),
+            @Mapping(target = "exitTime", source = "exitTime", qualifiedByName = "convertTime"),
+    })
+    public abstract ParkingExitEventDto parkingEventToExitDto(ParkingEvent parkingEvent);
 }

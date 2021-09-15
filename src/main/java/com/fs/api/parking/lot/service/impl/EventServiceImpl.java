@@ -22,9 +22,9 @@ import com.fs.api.parking.lot.service.TariffService;
 import com.fs.api.parking.lot.service.VehicleService;
 import com.fs.api.parking.lot.util.EventHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static com.fs.api.parking.lot.model.enums.PaymentStatus.SUCCESS;
@@ -60,6 +60,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public ParkingEntryEventDto vehicleEntrance(VehicleDto vehicleDto, GateDto gateDto) {
         logger.info("LogEvent.vehicleEntranceService.start : entry from gate {}", gateDto.getId());
         var entryGateEntity = gateService.find(gateDto);
@@ -73,6 +74,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public ParkingExitEventDto vehicleExit(ExitRequest request) {
         logger.info("LogEvent.vehicleExitService.start : exit from gate {}, ticket {}",
                 request.getExitGateDto().getId(), request.getTicket());
@@ -125,10 +127,7 @@ public class EventServiceImpl implements EventService {
         parkingEvent.setExitTime(LocalDateTime.now());
         parkingEventRepository.save(parkingEvent);
 
-        var parkingDto = ParkingExitEventDto.builder()
-                .ticketNumber(parkingEvent.getTicketNumber())
-                .exitTime(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").format(parkingEvent.getExitTime()))
-                .build();
+        var parkingDto = EventMapper.INSTANCE.parkingEventToExitDto(parkingEvent);
 
         logger.debug("LogEvent.updateParkingEvent.end : event {}", parkingEvent.getId());
         return parkingDto;

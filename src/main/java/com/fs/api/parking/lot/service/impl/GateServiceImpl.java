@@ -24,12 +24,10 @@ public class GateServiceImpl implements GateService {
         logger.info("LogEvent.findGateEntity.start : gate {}", dto.getId());
 
         var gateEntityOpt = gateRepository.findById(dto.getId());
-        if (gateEntityOpt.isEmpty()) {
+
+        return gateEntityOpt.orElseThrow(() ->{
             logger.error("LogEvent.findGateEntity.start : gate {}", dto.getId());
             throw new DPException("exception.parking-lot.gate-not-found", "Requested Gate not found");
-        }
-
-        logger.info("LogEvent.findGateEntity.end : gate {}", dto.getId());
-        return gateEntityOpt.get();
+        });
     }
 }
