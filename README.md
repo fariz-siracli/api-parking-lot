@@ -27,7 +27,7 @@ and the rest are handled by other components, and it can be simply emulate them 
 1. System must handle N-level parking type.
 2. Each floor must have <br/>
         - maximum weight <br/>
-        - maximum weight
+        - maximum height
 3. Every car is scanned and weight and height parameters are defined. 
 4. Free spot must be found and presented to car on entry.
 5. Price per minute according to parameters must be presented.
